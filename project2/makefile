@@ -5,7 +5,8 @@
 #	${common_libs} -Llib things
 
 
-GCC = gcc
+builder = gcc
+linker = gcc
 
 FLAGS = 
 LIBS = 
@@ -21,26 +22,27 @@ source += ${common_source}
 LIBS += ${common_libs}
 
 .PHONY: all
-all: debug
+all: release
 
 .PHONY: release
-release: FLAGS += -g -03
-release: target
+release: FLAGS += -g -O3
+release: $(target)
 
 .PHONY: debug
 debug: FLAGS += -g -O0
 debug: $(target)
 	
 %.o : %.c
-	$(GCC) -c $(FLAGS) $< ${headers:%=-I%} -o $@ $(LIBS)
+	$(builder) -c $(FLAGS) $< ${headers:%=-I%} -o $@ $(LIBS)
 	
 $(target) : $(source:%.c=%.o)
-	$(GCC) $< -o $@ $(LIBS)
+	$(linker) $< -o $@ $(LIBS)
 	
 clean:
 	rm -f *.o
 	rm -f $(target)
+	rm -f $(target:%=%.asm)
 	
 asm:
-	objdump -S -d $(target) > $(target).asm 
+	objdump -S -d $(target) >  $(target:%=%.asm)
 	

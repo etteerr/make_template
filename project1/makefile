@@ -5,9 +5,12 @@
 #	${common_libs} -Llib things
 
 
-GCC = gcc
+builder = gcc
+linker = gcc
 
+#Flags to pass. Note: These are regardless of debug and release
 FLAGS = 
+#libs, idem
 LIBS = 
 
 #Binary target file
@@ -21,21 +24,24 @@ source += ${common_source}
 LIBS += ${common_libs}
 
 .PHONY: all
-all: debug
+all: release
 
 .PHONY: release
-release: FLAGS += -g -03
-release: target
+#Release settings, adds release flags
+release: FLAGS += -g -O3
+release: $(target)
 
 .PHONY: debug
+#debug, adds debug settings (flags)
 debug: FLAGS += -g -O0
 debug: $(target)
 	
+#build all object files (includes common source), headers are also included.
 %.o : %.c
-	$(GCC) -c $(FLAGS) $< ${headers:%=-I%} -o $@ $(LIBS)
+	$(builder) -c $(FLAGS) $< ${headers:%=-I%} -o $@ $(LIBS)
 	
 $(target) : $(source:%.c=%.o)
-	$(GCC) $< -o $@ $(LIBS)
+	$(linker) $< -o $@ $(LIBS)
 	
 clean:
 	rm -f *.o

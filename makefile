@@ -1,15 +1,16 @@
+#Project targets
 SUBDIRS = project1 project2
 
-
-extra_cmd = 
+#Common settings
 bindir = ${CURDIR}/bin
-common_src = $(wildcard ${CURDIR}/src/*.c)
+srcdir = ${CURDIR}/src
+common_src = $(wildcard $(srcdir)/*.c)
 headers = ${CURDIR}/headers
 common_libs = 
 
 
-
-all: subdirs
+extra_cmd = 
+all: release
 
 .PHONY: subdirs $(SUBDIRS)
 .PHONY: all
@@ -20,7 +21,7 @@ all: subdirs
 
 subdirs: $(SUBDIRS)
 
-$(SUBDIRS):
+$(SUBDIRS): directories
 	$(MAKE) -C $@ $(extra_cmd) 	bindir=$(bindir) common_source=$(common_src) headers=$(headers) common_libs=$(common_libs)
 	
 debug: extra_cmd = debug
@@ -32,6 +33,10 @@ release: subdirs
 asm: extra_cmd = asm
 asm: subdirs
 
+.PHONY: directories
+directories:
+	mkdir -p $(bindir) $(headers) $(srcdir)
+
 test:
 	echo $(common_src)
 	echo $(common_head)
@@ -40,3 +45,4 @@ test:
 .PHONY: clean	
 clean: extra_cmd = clean
 clean: subdirs
+	rm $(srcdir)/*.o
