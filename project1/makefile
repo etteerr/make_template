@@ -44,7 +44,7 @@ debug: $(target)
 	$(builder) -c $(FLAGS) $< ${headers:%=-I%} -o $@ $(LIBS)
 	
 $(target) : $(source:%.c=%.o)
-	$(linker) $(source:%.c=%.o) -o $@ $(LIBS)
+	$(linker) $(FLAGS)  $(source:%.c=%.o) -o $@ $(LIBS)
 	
 clean:
 	rm -f *.o
