@@ -3,6 +3,7 @@
 #	${common_source} ../src/*c
 #	${headers} ../headers
 #	${common_libs} -Llib things
+#	${common_flags} 
 
 
 builder = gcc
@@ -14,14 +15,16 @@ FLAGS =
 LIBS = 
 
 #Binary target file
-target = ${bindir:%=%/}test-bin
-source = main.c
+target = ${bindir:%=%/}project1
+source = hello.c
 
 #--- Common source files and headerfiles from arguments ---
 # Adds *.c files from ../src
 source += ${common_source}
 # Adds libs from common
 LIBS += ${common_libs}
+# Add flags from common
+FLAGS += ${common_flags}
 
 .PHONY: all
 all: release
@@ -41,7 +44,7 @@ debug: $(target)
 	$(builder) -c $(FLAGS) $< ${headers:%=-I%} -o $@ $(LIBS)
 	
 $(target) : $(source:%.c=%.o)
-	$(linker) $< -o $@ $(LIBS)
+	$(linker) $(source:%.c=%.o) -o $@ $(LIBS)
 	
 clean:
 	rm -f *.o

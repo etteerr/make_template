@@ -7,6 +7,7 @@ srcdir = ${CURDIR}/src
 common_src = $(wildcard $(srcdir)/*.c)
 headers = ${CURDIR}/headers
 common_libs = 
+common_flags = 
 
 
 extra_cmd = 
@@ -22,7 +23,7 @@ all: release
 subdirs: $(SUBDIRS)
 
 $(SUBDIRS): directories
-	$(MAKE) -C $@ $(extra_cmd) 	bindir=$(bindir) common_source=$(common_src) headers=$(headers) common_libs=$(common_libs)
+	$(MAKE) -C $@ $(extra_cmd) 	bindir=$(bindir) common_source=$(common_src) headers=$(headers) common_libs=$(common_libs) common_flags=$(common_flags)
 	
 debug: extra_cmd = debug
 debug: subdirs
@@ -45,4 +46,4 @@ test:
 .PHONY: clean	
 clean: extra_cmd = clean
 clean: subdirs
-	rm $(srcdir)/*.o
+	rm -f $(srcdir)/*.o
