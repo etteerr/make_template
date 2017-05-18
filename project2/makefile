@@ -16,7 +16,7 @@ LIBS =
 
 #Binary target file
 target = ${bindir:%=%/}project2
-source = hello.c
+source = #(wildcard *c) #Can also specify specific files instead of wildcard!
 
 #--- Common source files and headerfiles from arguments ---
 # Adds *.c files from ../src
