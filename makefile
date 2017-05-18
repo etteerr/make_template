@@ -23,7 +23,7 @@ all: release
 subdirs: $(SUBDIRS)
 
 $(SUBDIRS): directories
-	$(MAKE) -C $@ $(extra_cmd) 	bindir=$(bindir) common_source=$(common_src) headers=$(headers) common_libs=$(common_libs) common_flags=$(common_flags)
+	$(MAKE) -C $@ $(extra_cmd) 	bindir="$(bindir)" common_source="$(common_src)" headers="$(headers)" common_libs="$(common_libs)" common_flags="$(common_flags)"
 	
 debug: extra_cmd = debug
 debug: subdirs
